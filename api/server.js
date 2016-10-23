@@ -10,6 +10,9 @@ var webpackConfig = require('./../webpack.config');
 var app = express();
 var compiler = webpack(webpackConfig);
 
+var Model = require('./model');
+require('./db_init');
+
 app.use(webpackDevMiddleware(compiler,{
     noInfo: true, publicPath: webpackConfig.output.publicPath
 }));
