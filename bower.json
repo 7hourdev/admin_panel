@@ -1,0 +1,17 @@
+{
+  "name": "react_base",
+  "description": "",
+  "main": "api/server.js",
+  "license": "ISC",
+  "homepage": "https://github.com/7hourdev/admin_panel",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "trumbowyg": "^2.4.1"
+  }
+}

@@ -11,18 +11,15 @@ export default React.createClass({
             <Navbar.Header>
               <Navbar.Brand>
                 <Link className="navbar-brand" to="/">
-                  <p>HEADER</p>
+                  <p>7hourdev Admin Panel</p>
                 </Link>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
               <Nav pullRight>
-                <LinkContainer to="#" activeClassName="active">
-                  <MenuItem  eventKey={1} >Link 1</MenuItem>
-                </LinkContainer>
-                <LinkContainer to="#" activeClassName="active">
-                  <MenuItem  eventKey={2} >Link 2</MenuItem>
+                <LinkContainer to="/profile" activeClassName="active">
+                  <MenuItem  eventKey={2} >Profile</MenuItem>
                 </LinkContainer>
               </Nav>
             </Navbar.Collapse>

@@ -1,7 +1,59 @@
-h1{
-	text-transform: uppercase;
+/** fk bs and their ugly theme **/
+.navbar-default{
+	background:#eee;
+	border:none;
+	box-shadow: none;
 }
+.btn{
+	border:none;
+	box-sizing: inherit;
+	box-shadow: none;
+	border-radius: 0;
+}
+.btn.btn-primary{
+	background-image: none;
+	background-color: #FF6B6B;
+}
+
 .content{
 	margin-bottom: 40px;
 	margin-top: 40px;
+}
+.home-content .item{
+	background-color: #efefef;
+	padding: 20px;
+	display: flex;
+}
+.home-content .item h3{
+	margin-top: 0;
+}
+.home-content .item i{
+	margin-top: 0;
+	font-size: 24px;
+	align-self: center;
+	margin-left: auto;
+}
+.edit-item{
+	padding: 20px;
+	padding-left: 0;
+	display: flex;
+}
+.edit-item h3{
+	margin-top: 0;
+}
+.edit-item i{
+	margin-top: 0;
+	font-size: 18px;
+	align-self: center;
+	margin-left: auto;
+}
+
+.home-content .item,
+.edit-item{
+	transition: 0.3s all;
+}
+.home-content .item:hover,
+.edit-item:hover{
+	cursor: pointer;
+	padding-right: 30px;
 }
