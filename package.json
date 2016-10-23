@@ -15,6 +15,7 @@
     "compression": "^1.6.1",
     "express": "^4.13.4",
     "if-env": "^1.0.0",
+    "pg": "^6.1.0",
     "react": "^0.14.7",
     "react-bootstrap": "^0.29.5",
     "react-dom": "^0.14.7",
