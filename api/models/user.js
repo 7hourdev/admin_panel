@@ -1,7 +1,8 @@
 var sequelize = require('../db');
 var DataTypes = require('sequelize');
+var Site = require('./site');
 
-module.exports = sequelize.define("users", {
+var User = sequelize.define("users", {
     id: {
         type:DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -22,11 +23,12 @@ module.exports = sequelize.define("users", {
     },
     type: {
         type: DataTypes.INTEGER,
-        validate: {
-            defaultValue: 0,
-        }
-    },
-    sites: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
-    },
+        defaultValue: 0
+    }
 });
+
+User.hasMany(Site, {
+    as: 'sites'
+});
+
+module.exports = User;

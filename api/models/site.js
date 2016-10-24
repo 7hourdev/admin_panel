@@ -1,7 +1,8 @@
 var sequelize = require('../db');
 var DataTypes = require('sequelize');
+var Content = require('./content');
 
-module.exports = sequelize.define("sites", {
+var Site = sequelize.define("sites", {
     id: {
         type:DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -12,8 +13,7 @@ module.exports = sequelize.define("sites", {
     },
     url: {
         type: DataTypes.STRING,
-    },
-    contents: {
-        type: DataTypes.ARRAY(DataTypes.UUID),
-    },
+    }
 });
+
+module.exports = Site;
