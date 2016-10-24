@@ -45,7 +45,7 @@ app.use(stormpath.init(app, {
     web: {
         login: {
             enabled: true,
-            nextUri: "/dashboard"
+            nextUri: "/"
         }
     },
     postRegistrationHandler: function (account, req, res, next) {
@@ -83,10 +83,17 @@ client.getApplication(config.stormpath.application, function(err, app) {
 });
 
 app.use(stormpath.getUser);
+app.use("/api/*", function(req, res, next){
+  if (req.user){
+    next();
+  } else{
+    res.status(401).send("Not Authorized!");
+  }
+});
 
 // custom routes
 var api_route = require('./routes/api');
-app.use('/api', stormpath.apiAuthenticationRequired, api_route);
+app.use('/api', api_route);
 
 // send all requests to index.html so browserHistory works
 app.get('*', function (req, res) {

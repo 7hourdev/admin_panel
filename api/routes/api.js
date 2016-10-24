@@ -15,7 +15,7 @@ router.get('/site/:id', function(req, res) {
 // All the sites
 router.get('/site', function(req, res) {
     Model.Site.findAll({
-        attributes: ['name', 'url']
+        attributes: ['name', 'url', 'id']
     }).then(function(sites) {
         res.send(sites);
     });

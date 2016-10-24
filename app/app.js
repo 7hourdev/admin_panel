@@ -43,7 +43,7 @@ export default React.createClass({
 				self.setState({websites:data})
 			},
 			error:function(err){
-				console.log(err)
+				window.location.href = URL("/login");
 			}
 		})
 	},

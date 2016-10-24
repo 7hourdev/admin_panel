@@ -1,9 +1,19 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, browserHistory} from 'react-router';
 import {Navbar, Nav, MenuItem} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import URL from './../helper/url';
 
 export default React.createClass({
+  logout() {
+    $.ajax({
+      url:URL("/logout"),
+      method:"post",
+      success:function(){
+        window.location.href = URL("/");
+      }
+    })
+  },
   render() {
     return (
     	<div className="home-header">
@@ -21,9 +31,7 @@ export default React.createClass({
                 <LinkContainer to="/profile" activeClassName="active">
                   <MenuItem  eventKey={2} >Profile</MenuItem>
                 </LinkContainer>
-                <LinkContainer to="/logout" activeClassName="active">
-                  <MenuItem  eventKey={3} >Log Out</MenuItem>
-                </LinkContainer>
+                <MenuItem onClick={this.logout} eventKey={3} >Log Out</MenuItem>
               </Nav>
             </Navbar.Collapse>
           </Navbar>
