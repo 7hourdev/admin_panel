@@ -49,7 +49,6 @@ app.use(stormpath.init(app, {
         }
     },
     postRegistrationHandler: function (account, req, res, next) {
-        console.log(account);
         var user = User.build({
             username: account.username,
             email: account.email,
@@ -62,7 +61,7 @@ app.use(stormpath.getUser);
 
 // custom routes
 var api_route = require('./routes/api');
-app.use('/api', api_route);
+app.use('/api', stormpath.loginRequired, api_route);
 
 // send all requests to index.html so browserHistory works
 app.get('*', function (req, res) {
