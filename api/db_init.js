@@ -1,14 +1,29 @@
 var Sequelize = require("./db");
 var Model = require('./model');
 
-//Sequelize.sync({force: true}).then(function() {
-Sequelize.sync().then(function() {
+// Move this elsewhere
+Model.Site.hasMany(Model.Content);
+Model.Content.belongsTo(Model.Site);
+Model.User.hasMany(Model.Site);
 
-    var dummy = Model.Content.build({
-        name: 'dummy',
-        content: 'Test data'
-    })
-    dummy.save();
+Sequelize.sync({force: true}).then(function() {
+    //Sequelize.sync().then(function() {
 
     console.log('DB Sync Completed');
+
+    var dummy = Model.Site.build({
+        name: '7hourdev',
+        url: 'http://7hourdev.com',
+        contents: [{
+            name: 'about',
+            content: 'we did good'
+        }, {
+            name: 'home',
+            content: 'sup'
+        }]
+    }, {
+        include: [Model.Content]
+    })
+
+    dummy.save();
 });

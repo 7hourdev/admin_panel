@@ -1,27 +1,21 @@
 var router = require('express').Router();
 var Model = require('../model');
 
-router.get('/content', function(req, res){
-    Model.Content.findAll({
-        attributes: ['name', 'content'],
-    }).then(function(content) {
-        res.send(content);
+// Specific site with content join
+router.get('/site/:id', function(req, res) {
+    Model.Site.findOne({
+        attributes: ['name', 'url'],
+        where: {id: req.params.id},
+        include: Model.Content
+    }).then(function(site) {
+        res.send(site);
     });
 });
 
-router.post('/content', function(req, res) {
-    Model.Content.create({
-        name: req.body.name,
-        content: req.body.content
-    }).then(function(done) {
-        console.log(done)
-        res.send(done)
-    })
-})
-
+// All the sites
 router.get('/site', function(req, res) {
     Model.Site.findAll({
-        attributes: ['name', 'url', 'contents']
+        attributes: ['name', 'url']
     }).then(function(sites) {
         res.send(sites);
     });
@@ -32,7 +26,6 @@ router.post('/site', function(req, res) {
         name: req.body.name,
         url: req.body.url
     }).then(function(done) {
-        console.log(done)
         res.send(done)
     })
 })

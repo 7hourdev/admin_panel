@@ -58,10 +58,12 @@ app.use(stormpath.init(app, {
     }
 }));
 
-var client = new stormpath_client.Client({ apiKey: {
-    id: config.stormpath.apiKey.id,
-    secret: config.stormpath.apiKey.secret
-} });
+var client = new stormpath_client.Client({
+    apiKey: {
+        id: config.stormpath.apiKey.id,
+        secret: config.stormpath.apiKey.secret
+    }
+});
 
 client.getApplication(config.stormpath.application, function(err, app) {
     app.getAccounts(function(err2, accounts) {
