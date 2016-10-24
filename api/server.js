@@ -61,7 +61,7 @@ app.use(stormpath.getUser);
 
 // custom routes
 var api_route = require('./routes/api');
-app.use('/api', stormpath.loginRequired, api_route);
+app.use('/api', stormpath.apiAuthenticationRequired, api_route);
 
 // send all requests to index.html so browserHistory works
 app.get('*', function (req, res) {

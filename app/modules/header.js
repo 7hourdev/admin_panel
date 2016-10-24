@@ -21,6 +21,9 @@ export default React.createClass({
                 <LinkContainer to="/profile" activeClassName="active">
                   <MenuItem  eventKey={2} >Profile</MenuItem>
                 </LinkContainer>
+                <LinkContainer to="/logout" activeClassName="active">
+                  <MenuItem  eventKey={3} >Log Out</MenuItem>
+                </LinkContainer>
               </Nav>
             </Navbar.Collapse>
           </Navbar>

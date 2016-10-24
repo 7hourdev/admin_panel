@@ -1,5 +1,7 @@
 var Sequelize = require("sequelize");
-var sequelize = new Sequelize('admin', 'postgres', '', {
+var config = require("../config").db;
+
+var sequelize = new Sequelize(config.name, config.user, config.pass, {
   host: "localhost",
   port: 5432,
   dialect: "postgres",

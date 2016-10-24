@@ -2,6 +2,7 @@ import React from 'react'
 import Header from './modules/header'
 import Footer from './modules/footer'
 import {browserHistory} from 'react-router'
+import URL from './helper/url'
 
 export default React.createClass({
 	componentDidUpdate(){
@@ -26,11 +27,25 @@ export default React.createClass({
             }]
         }
 	},
+	componentDidMount(){
+		this.load();
+	},
 	navigateTo(url){
 		browserHistory.push(url);
 	},
 	load(){
-
+		var self = this;
+		$.ajax({
+			url:URL("/api/site"),
+			method:"get",
+			success:function(data){
+				console.log(data);
+				self.setState({websites:data})
+			},
+			error:function(err){
+				console.log(err)
+			}
+		})
 	},
 	render() {
 		var self = this;
