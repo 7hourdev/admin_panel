@@ -1,16 +1,17 @@
 import React from 'react';
 import {Link} from 'react-router';
+import URL from '../helper/url'
 
 export default React.createClass({
     getInitialState(){
         return {
-            user : {
-                username : "David",
-                email: "david@david.com",
-                type: "Int:  Default",
-                website: []
-            }
+            user : this.props.user
         }
+    },
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            user : nextProps.user
+        });
     },
     render() {
         return (
@@ -22,7 +23,7 @@ export default React.createClass({
                 <label>Email</label>
                 <p>{this.state.user.email}</p>
                 <label>Websites</label>
-                {this.state.user.website.map(website => <p>website</p>)}
+                {this.state.user.sites.map(website => <p>website</p>)}
             </div>
         );
     }

@@ -15,6 +15,25 @@ export default React.createClass({
     })
   },
   render() {
+    var admin_button = 
+              <Nav pullRight>
+                <LinkContainer to="/profile" activeClassName="active">
+                  <MenuItem  eventKey={2} >Profile</MenuItem>
+                </LinkContainer>
+                <MenuItem onClick={this.logout} eventKey={3} >Log Out</MenuItem>
+              </Nav>;
+    if (this.props.admin){
+      admin_button = 
+              <Nav pullRight>
+                <LinkContainer to="/add_site" activeClassName="active">
+                  <MenuItem  eventKey={3} >Add Site</MenuItem>
+                </LinkContainer>
+                <LinkContainer to="/profile" activeClassName="active">
+                  <MenuItem  eventKey={2} >Profile</MenuItem>
+                </LinkContainer>
+                <MenuItem onClick={this.logout} eventKey={3} >Log Out</MenuItem>
+              </Nav>;
+    }
     return (
     	<div className="home-header">
          <Navbar className="navbar navbar-normal-pages navbar-show">
@@ -27,12 +46,7 @@ export default React.createClass({
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
-              <Nav pullRight>
-                <LinkContainer to="/profile" activeClassName="active">
-                  <MenuItem  eventKey={2} >Profile</MenuItem>
-                </LinkContainer>
-                <MenuItem onClick={this.logout} eventKey={3} >Log Out</MenuItem>
-              </Nav>
+              {admin_button}
             </Navbar.Collapse>
           </Navbar>
     	</div>

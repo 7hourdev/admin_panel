@@ -2,9 +2,14 @@ var Sequelize = require("./db");
 var Model = require('./model');
 
 // Move this elsewhere
+Model.Site.belongsToMany(Model.User, {
+    through: "UserSite"
+});
+Model.User.belongsToMany(Model.Site, {
+    through: "UserSite"
+});
 Model.Site.hasMany(Model.Content);
 Model.Content.belongsTo(Model.Site);
-Model.User.hasMany(Model.Site);
 
 Sequelize.sync({force: true}).then(function() {
     //Sequelize.sync().then(function() {
@@ -24,6 +29,5 @@ Sequelize.sync({force: true}).then(function() {
     }, {
         include: [Model.Content]
     })
-
     dummy.save();
 });

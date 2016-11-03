@@ -17,11 +17,11 @@ export default React.createClass({
         var website = this.state.website;
         return (
             <div className="">
-                {website.contents.map(content => 
-                    <div key = {content.name} className="edit-item" onClick = {()=>self.props.navigateTo("/"+website.id+"/"+content.id)}>
+                {website.contents?website.contents.map((content) => 
+                    <div key = {content.id} className="edit-item" onClick = {()=>self.props.navigateTo("/"+website.id+"/"+content.id)}>
                         <h3 className="inner">{content.name}</h3>
                         <i className="icon ion-chevron-right"/>
-                    </div>)}
+                    </div>):"N/A"}
             </div>
         );
     }

@@ -1,6 +1,7 @@
 var sequelize = require('../db');
 var DataTypes = require('sequelize');
 var Content = require('./content');
+var User = require('./user');
 
 var Site = sequelize.define("sites", {
     id: {

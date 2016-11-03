@@ -10,21 +10,13 @@ export default React.createClass({
 	},
 	getInitialState(){
         return {
-            websites : [{
-                id : "1",
-                name : "Hello World Website",
-                url : "http://gofuckyourself.com",
-                contents : [{
-                	id:"1",
-                    name : "About Page",
-                    content : "<h1>Hello World</h1>"
-                },{
-                	id:"2",
-                    name : "Another Page",
-                    content : "<h1>Hello Lorem</h1>"
-                }
-                ]
-            }]
+            websites : [],
+            user : {
+                username : "Loading",
+                email: "Loading",
+                type:0,
+                sites: []
+            }
         }
 	},
 	componentDidMount(){
@@ -46,15 +38,27 @@ export default React.createClass({
 				window.location.href = URL("/login");
 			}
 		})
+        var self = this;
+        $.ajax({
+            url:URL("/api/me"),
+            method:"get",
+            success:function(data){
+                self.setState({user:data})
+            },
+            error:function(err){
+                window.location.href = URL("/login");
+            }
+        })
 	},
 	render() {
 		var self = this;
 		return (
 			<div>
-				<Header/>
+				<Header admin={self.state.user.type==1}/>
 				{React.Children.map(this.props.children,
 					(child) => React.cloneElement(child, {
 						websites:self.state.websites,
+						user:self.state.user,
 						navigateTo:self.navigateTo,
 						load:self.load
 					})
