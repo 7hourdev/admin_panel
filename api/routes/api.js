@@ -17,50 +17,6 @@ router.get('/site/:id', function(req, res) {
     });
 });
 
-// All the sites
-router.get('/site', function(req, res) {
-    AdminCheck(res,req,function(){
-        Model.Site.findAll({
-            attributes: ['name', 'url', 'id'],
-            include: Model.Content 
-        }).then(function(sites) {
-            res.send(sites);
-        });
-    },function(user){
-        user.getSites().then(function(sites){
-            res.send(sites);
-        })
-    });
-});
-
-router.post('/site', function(req, res) {
-    AdminCheck(res,req,function(user){
-        Model.Site.create({
-            name: req.body.name,
-            url: req.body.url,
-        }).then(function(done) {
-            done.addUsers(req.body.users);
-            done.addUser(user);
-            // Model.User.findAll({
-            //     where:{
-            //         id:{
-            //             $in : req.body.users
-            //         }
-            //     }
-            // }).then(function(users){
-            //     for ( index in users){
-            //         var tmpUser = users[index];
-            //         tmpUser.addSite(done);
-            //     }
-            //     user.addSite(done).then(function(){
-            //         res.send(done);                
-            //     });
-            // })
-            res.send("done");
-        })
-    });
-});
-
 router.post('/site/:id/', function(req, res) {
     AdminCheck(res,req,function(){
         Model.Content.create({
@@ -109,6 +65,35 @@ router.post('/site/:id/:contentid', function(req, res) {
             }
         })
         res.status(401).send("Cannot find Site");
+    });
+});
+
+// All the sites
+router.get('/site', function(req, res) {
+    AdminCheck(res,req,function(){
+        Model.Site.findAll({
+            attributes: ['name', 'url', 'id'],
+            include: Model.Content 
+        }).then(function(sites) {
+            res.send(sites);
+        });
+    },function(user){
+        user.getSites().then(function(sites){
+            res.send(sites);
+        })
+    });
+});
+
+router.post('/site', function(req, res) {
+    AdminCheck(res,req,function(user){
+        Model.Site.create({
+            name: req.body.name,
+            url: req.body.url,
+        }).then(function(done) {
+            done.addUsers(req.body.users);
+            done.addUser(user);
+            res.send("done");
+        })
     });
 });
 
