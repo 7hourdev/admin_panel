@@ -64,23 +64,24 @@ var client = new stormpath_client.Client({
         secret: config.stormpath.apiKey.secret
     }
 });
-
-// client.getApplication(config.stormpath.application, function(err, app) {
-//     app.getAccounts(function(err2, accounts) {
-//         if (err2){
-//             console.log("ERROR: " + err2);
-//         }
-//         accounts.map(function(account){
-//             var user = User.build({
-//                 username: account.username,
-//                 email: account.email,
-//                 createdAt: account.createdAt,
-//                 modifiedAt: account.modifiedAt,
-//             });
-//             user.save();
-//         });
-//     });
-// });
+if(config.reset){
+    client.getApplication(config.stormpath.application, function(err, app) {
+        app.getAccounts(function(err2, accounts) {
+            if (err2){
+                console.log("ERROR: " + err2);
+            }
+            accounts.map(function(account){
+                var user = User.build({
+                    username: account.username,
+                    email: account.email,
+                    createdAt: account.createdAt,
+                    modifiedAt: account.modifiedAt,
+                });
+                user.save();
+            });
+        });
+    });
+}
 
 app.use(stormpath.getUser);
 app.use("/api/*", function(req, res, next){
