@@ -75,19 +75,16 @@ router.post('/site/:id/:contentid', function(req, res) {
         })
     },
     function(user){
-        user.getSites({include: [Model.Content]}).then(function(sites){
+        user.getSites({include: [Model.Content], where: {id:req.params.id}}).then(function(sites){
+            var site = sites[0];
             var found = false;
-            sites.forEach(function(site){
-                if(site.id == req.params.id){
-                    site.contents.forEach(function(content){
-                        if(content.id == req.params.contentid){
-                            content.content = req.body.content;
-                            content.save();
-                            res.send("Success");
-                            found=true;
-                            return;
-                        }
-                    });
+            site.contents.forEach(function(content){
+                if(content.id == req.params.contentid){
+                    content.content = req.body.content;
+                    content.save();
+                    res.send("Success");
+                    found=true;
+                    return;
                 }
             });
             if(!found){
