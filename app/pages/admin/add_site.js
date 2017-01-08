@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, browserHistory} from 'react-router';
+import {Link} from 'react-router';
 import {Button} from 'react-bootstrap';
 import Select from 'react-select';
 import FieldGroup from './form-group';
@@ -26,7 +26,7 @@ export default React.createClass({
                 users:self.state.selected.map((val)=>val.value)
             },
             success:function(data){
-                browserHistory.push("/");
+                self.props.navigateTo("/",true);
             },
             error:function(err){
                 window.location.href = URL("/login");
