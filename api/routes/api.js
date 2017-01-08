@@ -75,23 +75,25 @@ router.post('/site/:id/:contentid', function(req, res) {
         })
     },
     function(user){
-            console.log("hit");
         user.getSites({include: [Model.Content]}).then(function(sites){
-            console.log("hit");
-            for (site in sites){
+            var found = false;
+            sites.forEach(function(site){
                 if(site.id == req.params.id){
-                    for (content in site.contents){
+                    site.contents.forEach(function(content){
                         if(content.id == req.params.contentid){
                             content.content = req.body.content;
                             content.save();
                             res.send("Success");
+                            found=true;
                             return;
                         }
-                    }
-                    res.status(404).send("Cannot find Content");
-                    return;
+                    });
                 }
+            });
+            if(!found){
+                res.status(404).send("Cannot find Sites");
             }
+            return;
         }).catch(function(){
             res.status(404).send("Cannot find Site");
         })

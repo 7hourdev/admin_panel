@@ -5,7 +5,7 @@ var sequelize = new Sequelize(config.name, config.user, config.pass, {
   host: config.url,
   port: 5432,
   dialect: "postgres",
-  logging: (process.argv.length >= 2 && process.argv[2] == "test") ? false : console.log
+  logging: config.debug ? console.log : false
 });
 
 module.exports = sequelize;
