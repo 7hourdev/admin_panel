@@ -46,6 +46,10 @@ app.use(stormpath.init(app, {
         login: {
             enabled: true,
             nextUri: "/"
+        },
+        changePassword: {
+            autoLogin: false,
+            nextUri: "/",
         }
     },
     postRegistrationHandler: function (account, req, res, next) {
