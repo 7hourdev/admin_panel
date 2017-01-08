@@ -31,6 +31,7 @@ export default React.createClass({
     },
     save(){
         var self = this;
+            console.log("hit");
         $.ajax({
             url:URL("/api/site/"+this.state.website.id+"/"+this.state.content.id),
             method:"post",

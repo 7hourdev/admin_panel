@@ -75,7 +75,9 @@ router.post('/site/:id/:contentid', function(req, res) {
         })
     },
     function(user){
+            console.log("hit");
         user.getSites({include: [Model.Content]}).then(function(sites){
+            console.log("hit");
             for (site in sites){
                 if(site.id == req.params.id){
                     for (content in site.contents){
@@ -83,14 +85,16 @@ router.post('/site/:id/:contentid', function(req, res) {
                             content.content = req.body.content;
                             content.save();
                             res.send("Success");
+                            return;
                         }
                     }
                     res.status(404).send("Cannot find Content");
-                    break;
+                    return;
                 }
             }
+        }).catch(function(){
+            res.status(404).send("Cannot find Site");
         })
-        res.status(401).send("Cannot find Site");
     });
 });
 
