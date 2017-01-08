@@ -21,19 +21,42 @@ router.post('/site/:id/', function(req, res) {
     AdminCheck(res,req,function(){
         Model.Content.create({
             name: req.body.name,
-            url: req.body.url
+            content: req.body.content
         }).then(function(content) {
             Model.Site.findOne({
                 attributes: ['name', 'url', 'id'],
                 where: {
-                    id: res.params.id
+                    id: req.params.id
                 }
             }).then(function(site) {
                 site.addContent(content).then(function(){
                     res.send(content);                
                 });
             });
+        }).catch(function(err){
+            res.status(404).send("failed");
         })
+    });
+});
+
+router.post('/site/:id/edit', function(req, res) {
+    AdminCheck(res,req,function(){
+        Model.Site.findOne({
+            attributes: ['name', 'url', 'id'],
+            where: {
+                id: req.params.id
+            }
+        }).then(function(site) {
+            site.name = req.body.name;
+            site.url = req.body.url;
+            site.save();
+            // add users
+            site.setUsers(req.body.users);
+            site.addUser(user);
+            res.send("done");
+        }).catch(function(err){
+            res.status(404).send("failed");
+        });
     });
 });
 
@@ -46,10 +69,13 @@ router.post('/site/:id/:contentid', function(req, res) {
         }).then(function(content) {
             content.content = req.body.content;
             content.save();
+            res.send("success")
+        }).catch(function(err){
+            res.status(404).send("failed");
         })
     },
     function(user){
-        user.getSites().then(function(sites){
+        user.getSites({include: [Model.Content]}).then(function(sites){
             for (site in sites){
                 if(site.id == req.params.id){
                     for (content in site.contents){
@@ -59,7 +85,7 @@ router.post('/site/:id/:contentid', function(req, res) {
                             res.send("Success");
                         }
                     }
-                    res.status(401).send("Cannot find Content");
+                    res.status(404).send("Cannot find Content");
                     break;
                 }
             }
@@ -73,12 +99,12 @@ router.get('/site', function(req, res) {
     AdminCheck(res,req,function(){
         Model.Site.findAll({
             attributes: ['name', 'url', 'id'],
-            include: Model.Content 
+            include: [Model.Content, Model.User]
         }).then(function(sites) {
             res.send(sites);
         });
     },function(user){
-        user.getSites().then(function(sites){
+        user.getSites({include: [Model.Content]}).then(function(sites){
             res.send(sites);
         })
     });

@@ -47,7 +47,10 @@
 	align-self: center;
 	margin-left: auto;
 }
-
+button.add-section{
+	margin-bottom: 20px;
+	margin-right: 5px;
+}
 .home-content .item,
 .edit-item{
 	transition: 0.3s all;

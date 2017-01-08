@@ -22,8 +22,11 @@ export default React.createClass({
 	componentDidMount(){
 		this.load();
 	},
-	navigateTo(url){
+	navigateTo(url, reload = false){
 		browserHistory.push(url);
+		if(reload){
+			this.load();
+		}
 	},
 	load(){
 		var self = this;

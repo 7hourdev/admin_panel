@@ -1,18 +1,9 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
-import {Button, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import Select from 'react-select';
+import FieldGroup from './form-group';
 import URL from '../../helper/url'
-
-function FieldGroup({ id, label, help, props }) {
-  return (
-    <FormGroup controlId={id}>
-      <ControlLabel>{label}</ControlLabel>
-      <FormControl props />
-      {help && <HelpBlock>{help}</HelpBlock>}
-    </FormGroup>
-  );
-}
 
 export default React.createClass({
     getInitialState(){

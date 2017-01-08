@@ -1,4 +1,5 @@
 import React from 'react';
+import URL from '../../helper/url'
 import {Link} from 'react-router';
 import {Modal, Button} from 'react-bootstrap';
 
@@ -6,13 +7,21 @@ export default React.createClass({
     getInitialState(){
         return {
             website : this.props.website,
+            content : {},
             showModal: false
         }
     },
     componentWillReceiveProps(nextProps){
+        var section = nextProps.website.contents.filter(content => content.id == nextProps.params.contentid);
+        if (!section||section.length==0){
+            this.props.navigateTo("/"+nextProps.website.id);
+        }
+        section = section[0];
         this.setState({
-            website : nextProps.website
-        })
+            website : nextProps.website,
+            content : section
+        });
+        $('#content').trumbowyg('html',section?section.content:"");
     },
     close() {
         this.setState({ showModal: false });
@@ -21,16 +30,24 @@ export default React.createClass({
         this.setState({ showModal: true });
     },
     save(){
-        this.close()
+        var self = this;
+        $.ajax({
+            url:URL("/api/site/"+this.state.website.id+"/"+this.state.content.id),
+            method:"post",
+            data:{
+                name:$("#name").val(),
+                content:$("#content").trumbowyg('html'),
+            },
+            success:function(data){
+                self.props.navigateTo("/"+self.state.website.id, true);
+            },
+            error:function(err){
+                console.log(err);
+            }
+        })
     },
     componentDidMount(){
-        var section = this.state.website.contents.filter(content => content.id == this.props.params.contentid);
-        if (!section||section.length==0){
-            return;
-        }
-        section = section[0];
-        console.log(section.content);
-        $('#editor').trumbowyg({
+        $('#content').trumbowyg({
             btns: [
                 ['viewHTML'],
                 ['formatting'],
@@ -44,7 +61,7 @@ export default React.createClass({
                 ['fullscreen']
             ]
         });
-        $('#editor').trumbowyg('html',section.content);
+        this.componentWillReceiveProps(this.props);
     },
     render() {
         var section = this.state.website.contents.filter(content => content.id == this.props.params.contentid);
@@ -55,9 +72,9 @@ export default React.createClass({
         return (
             <div className="editor-section">
                 <h3>Section: {section.name}</h3>
-                <p id = "editor"></p>
+                <p id = "content"></p>
                 <button className="btn btn-secondary btn-lg" onClick={this.open}>Back</button>
-                <button className="btn btn-primary btn-lg" style={{float:"right"}}>Finish</button>
+                <button className="btn btn-primary btn-lg" style={{float:"right"}} onClick={this.save}>Finish</button>
                 <Modal show={this.state.showModal} onHide={this.close}>
                   <Modal.Header closeButton>
                     <Modal.Title>Are You Sure?</Modal.Title>

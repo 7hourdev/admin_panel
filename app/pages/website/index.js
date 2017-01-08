@@ -27,11 +27,11 @@ export default React.createClass({
             <div className="container content">
                 <h1>Site Name: {website.name}</h1>
                 <a href={website.url}>Visit Site</a>
-                <p>Modify your site's content below</p>
                 <hr/>
                 {React.Children.map(this.props.children,
                     (child) => React.cloneElement(child, {
                         website:website,
+                        user:self.props.user,
                         navigateTo:self.props.navigateTo,
                     })
                 )}
