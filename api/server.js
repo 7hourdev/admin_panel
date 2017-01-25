@@ -91,13 +91,6 @@ if(config.reset){
 }
 
 app.use(stormpath.getUser);
-app.use("/api/*", function(req, res, next){
-  if (req.user){
-    next();
-  } else{
-    res.status(401).send("Not Authorized!");
-  }
-});
 
 // custom routes
 var api_route = require('./routes/api');
