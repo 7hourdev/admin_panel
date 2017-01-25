@@ -60,6 +60,20 @@ router.post('/site/:id/edit', function(req, res) {
     });
 });
 
+router.delete('/site/:id/:contentid', function(req, res) {
+    AdminCheck(res,req,function(){
+        Model.Content.destroy({
+            where: {
+                id:req.params.contentid
+            }
+        }).then(function(content) {
+            res.send("done");
+        }).catch(function(err){
+            res.status(404).send("failed");
+        });
+    });
+});
+
 router.post('/site/:id/:contentid', function(req, res) {
     AdminCheck(res,req,function(user){
         Model.Content.findOne({
