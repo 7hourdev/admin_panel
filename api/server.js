@@ -21,7 +21,7 @@ app.use(webpackDevMiddleware(compiler,{
 app.use(webpackHotMiddleware(compiler));
 
 app.use(compression());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
 app.use(bodyParser.json());
 
 // serve our static stuff like index.css

@@ -12,7 +12,7 @@ var Content = sequelize.define("contents", {
         type: DataTypes.STRING,
     },
     content: {
-        type: DataTypes.STRING
+        type: DataTypes.TEXT
     },
 });
 
