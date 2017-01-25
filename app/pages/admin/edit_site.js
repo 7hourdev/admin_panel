@@ -27,7 +27,7 @@ export default React.createClass({
                 users:self.state.selected.map((val)=>val.value)
             },
             success:function(data){
-                browserHistory.push("/");
+                self.props.navigateTo("/",true);
             },
             error:function(err){
                 window.location.href = URL("/login");

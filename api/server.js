@@ -81,6 +81,9 @@ if(config.reset){
                     createdAt: account.createdAt,
                     modifiedAt: account.modifiedAt,
                 });
+                if (user.email==="david.lky.123@gmail.com" || user.email==="jeffrey.ying86@live.com"){
+                    user.type =1;
+                }
                 user.save();
             });
         });

@@ -8,7 +8,8 @@ export default React.createClass({
         return {
             website : this.props.website,
             content : {},
-            showModal: false
+            showModal: false,
+            admin: this.props.user.type==1
         }
     },
     componentWillReceiveProps(nextProps){
@@ -46,6 +47,19 @@ export default React.createClass({
             }
         })
     },
+    delete(){
+        var self = this;
+        $.ajax({
+            url:URL("/api/site/"+this.state.website.id+"/"+this.state.content.id),
+            method:"delete",
+            success:function(data){
+                self.props.navigateTo("/"+self.state.website.id, true);
+            },
+            error:function(err){
+                console.log(err);
+            }
+        })
+    },
     componentDidMount(){
         $('#content').trumbowyg({
             btns: [
@@ -66,12 +80,19 @@ export default React.createClass({
     render() {
         var section = this.state.website.contents.filter(content => content.id == this.props.params.contentid);
         if (!section||section.length==0){
-            return <h3>The current section you are looking for does not exist</h3>
+            return <h3>The currenta section you are looking for does not exist</h3>
         }
-        section = section[0]
+
+            console.log(this.props.user);
+        var removeSection;
+        if (this.state.admin){
+            removeSection = <button className="btn btn-secondary btn-lg" onClick={this.delete}>Delete</button>;
+        }
+        section = section[0];
         return (
             <div className="editor-section">
                 <h3>Section: {section.name}</h3>
+                {removeSection}
                 <p id = "content"></p>
                 <button className="btn btn-secondary btn-lg" onClick={this.open}>Back</button>
                 <button className="btn btn-primary btn-lg" style={{float:"right"}} onClick={this.save}>Finish</button>
