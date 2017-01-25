@@ -30,7 +30,7 @@ router.post('/site/:id/', function(req, res) {
                 }
             }).then(function(site) {
                 site.addContent(content).then(function(){
-                    res.send(content);                
+                    res.send(content);
                 });
             });
         }).catch(function(err){
@@ -81,6 +81,10 @@ router.post('/site/:id/:contentid', function(req, res) {
                 id:req.params.contentid
             }
         }).then(function(content) {
+            if (req.body.name) {
+                content.name = req.body.name;
+            }
+
             content.content = req.body.content;
             content.save();
             res.send("success")
