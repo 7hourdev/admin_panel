@@ -34,7 +34,6 @@ export default React.createClass({
 			url:URL("/api/site"),
 			method:"get",
 			success:function(data){
-				console.log(data);
 				self.setState({websites:data})
 			},
 			error:function(err){

@@ -40,7 +40,6 @@ export default React.createClass({
             url:URL("/api/user"),
             method:"get",
             success:function(data){
-                console.log(data);
                 data = data.reduce(function(previous,user){
                     if(user.id!==self.props.user.id){
                         previous.push({value:""+user.id,label:user.email})

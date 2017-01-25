@@ -36,7 +36,7 @@ export default React.createClass({
             url:URL("/api/site/"+this.state.website.id+"/"+this.state.content.id),
             method:"post",
             data:{
-                name:$("#name").val(),
+                name:self.state.admin?$("#name").val():"",
                 content:$("#content").trumbowyg('html'),
             },
             success:function(data){
@@ -82,16 +82,15 @@ export default React.createClass({
         if (!section||section.length==0){
             return <h3>The currenta section you are looking for does not exist</h3>
         }
-
-            console.log(this.props.user);
         var removeSection;
         if (this.state.admin){
             removeSection = <button className="btn btn-secondary btn-lg" onClick={this.delete}>Delete</button>;
         }
         section = section[0];
+        var sectionName = <input id = "name" type = "text" className = "form-control" defaultValue={section.name}/>
         return (
             <div className="editor-section">
-                <h3>Section: {section.name}</h3>
+                <h3>Section: {this.state.admin?sectionName:section.name}</h3>
                 {removeSection}
                 <p id = "content"></p>
                 <button className="btn btn-secondary btn-lg" onClick={this.open}>Back</button>
