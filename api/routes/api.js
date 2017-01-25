@@ -13,6 +13,12 @@ router.get('/site/:id', function(req, res) {
         where: {id: req.params.id},
         include: Model.Content
     }).then(function(site) {
+        site = JSON.parse(JSON.stringify(site))
+        var contents = {}
+        site.contents.forEach(function(content) {
+            contents[content.name] = content;
+        })
+        site.contents = contents;
         res.send(site);
     });
 });
