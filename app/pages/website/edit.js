@@ -85,7 +85,7 @@ export default React.createClass({
         var removeSection;
         if (this.state.admin){
             removeSection = <button className="btn btn-secondary btn-lg" onClick={this.delete}>Delete</button>;
-       }
+        }
         section = section[0];
         var sectionName = <input id = "name" type = "text" className = "form-control" defaultValue={section.name}/>
         return (
