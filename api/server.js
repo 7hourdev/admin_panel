@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var cors = require('cors');
 var compression = require('compression');
 var bodyParser = require('body-parser');
 var webpack = require('webpack');
@@ -13,6 +14,8 @@ var compiler = webpack(webpackConfig);
 
 var Model = require('./model');
 require('./db_init');
+
+app.use(cors());
 
 app.use(webpackDevMiddleware(compiler,{
     noInfo: true, publicPath: webpackConfig.output.publicPath
