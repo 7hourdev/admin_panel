@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "bootstrap": "./scripts/initializedb.sh && yarn install && bower install",
     "start:dev": "NODE_ENV=local node api/server.js",
-    "start:prod": "webpack && NODE_ENV=production node api/server.js"
+    "start:prod": "webpack && NODE_ENV=production node api/server.js",
+    "test": "webpack && mocha test"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +19,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.15.2",
+    "chai": "^4.1.2",
     "compression": "^1.6.1",
     "compression-webpack-plugin": "^1.0.1",
     "cors": "^2.8.1",
@@ -25,6 +28,8 @@
     "if-env": "^1.0.0",
     "mobx": "^3.4.0",
     "mobx-react": "^4.3.5",
+    "mocha": "^4.0.1",
+    "mz": "^2.7.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.4.0",
@@ -35,6 +40,7 @@
     "react-router-dom": "^4.2.2",
     "react-select": "^1.0.0-rc.2",
     "sequelize": "^4.22.5",
+    "supertest": "^3.0.0",
     "webpack-dev-middleware": "^1.5.1",
     "webpack-hot-middleware": "^2.9.1"
   },
