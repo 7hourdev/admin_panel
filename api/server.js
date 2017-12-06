@@ -28,9 +28,15 @@ if (process.env.NODE_ENV != "production"){
     }));
 
     app.use(webpackHotMiddleware(compiler));
+} else {
+  app.use(compression());
+  
+  app.get('*.js', function (req, res, next) {
+    req.url = req.url + '.gz';
+    res.set('Content-Encoding', 'gzip');
+    next();
+  });
 }
-
-app.use(compression());
 
 app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
 app.use(bodyParser.json());
