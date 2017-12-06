@@ -1,21 +1,23 @@
 import React from 'react';
-import {Link, browserHistory} from 'react-router';
 import {Button} from 'react-bootstrap';
 import Select from 'react-select';
 import FieldGroup from './form-group';
 import URL from '../../helper/url'
 
-export default React.createClass({
+import {Link} from 'react-router-dom';
+import {observer} from 'mobx-react';
+
+export default @observer class editsite extends React.Component{
     getInitialState(){
         return {
             users : [],
             selected: this.props.website.users.map(item => item.id),
             website : this.props.website,
         }
-    },
+    }
     changed(data){
         this.setState({selected:data});
-    },
+    }
     edit(){
         var self = this;
         $.ajax({
@@ -33,7 +35,7 @@ export default React.createClass({
                 window.location.href = URL("/login");
             }
         })
-    },
+    }
     componentDidMount(){
         var self = this;
         $.ajax({
@@ -52,7 +54,7 @@ export default React.createClass({
                 window.location.href = URL("/login");
             }
         })
-    },
+    }
     render() {
         return (
             <div className="container">
@@ -88,4 +90,4 @@ export default React.createClass({
             </div>
         );
     }
-})
+}

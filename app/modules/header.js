@@ -1,55 +1,98 @@
 import React from 'react';
-import {Link, browserHistory} from 'react-router';
-import {Navbar, Nav, MenuItem} from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import {Route} from 'react-router-dom';
+import {Navbar, Nav, NavItem} from 'react-bootstrap';
 import URL from './../helper/url';
+import { withRouter } from 'react-router';
 
-export default React.createClass({
+
+import {observer} from 'mobx-react'
+
+import Page from 'pages/abstract/page';
+
+import SiteStore from 'stores/site'
+import AppStore from 'stores/app';
+
+@observer
+class header extends Page{
   logout() {
     $.ajax({
-      url:URL("/logout"),
-      method:"post",
+      url:URL("/api/logout"),
+      method:"get",
       success:function(){
         window.location.href = URL("/");
+        SiteStore.loaded = false;
+        AppStore.website = undefined;
       }
     })
-  },
-  render() {
-    var admin_button = 
+  }
+  renderAdmin(){
+    return this.renderSections(<RouteNavItem href="/add_site" activeclassname="active">Add Site</RouteNavItem>);
+  }
+  renderUser(){
+    return this.renderSections();
+  }
+  renderNoAuth(){
+    var self = this;
+    return (
+      <div className="home-header">
+         <Navbar className="navbar navbar-normal-pages navbar-show">
+            <Navbar.Header>
+              <Navbar.Brand>
+                <a className="navbar-brand" onClick={()=>self.props.history.push("/")}>
+                  <p>7hourdev Admin Panel</p>
+                </a>
+              </Navbar.Brand>
+              <Navbar.Toggle />
+            </Navbar.Header>
+            <Navbar.Collapse>
               <Nav pullRight>
-                <LinkContainer to="/profile" activeClassName="active">
-                  <MenuItem  eventKey={2} >Profile</MenuItem>
-                </LinkContainer>
-                <MenuItem onClick={this.logout} eventKey={3} >Log Out</MenuItem>
+                <RouteNavItem href="/register" activeclassname="active">Register</RouteNavItem>
+                <RouteNavItem href="/login" activeclassname="active">Login</RouteNavItem>
               </Nav>;
-    if (this.props.admin){
-      admin_button = 
-              <Nav pullRight>
-                <LinkContainer to="/add_site" activeClassName="active">
-                  <MenuItem  eventKey={3} >Add Site</MenuItem>
-                </LinkContainer>
-                <LinkContainer to="/profile" activeClassName="active">
-                  <MenuItem  eventKey={2} >Profile</MenuItem>
-                </LinkContainer>
-                <MenuItem onClick={this.logout} eventKey={3} >Log Out</MenuItem>
-              </Nav>;
-    }
+            </Navbar.Collapse>
+          </Navbar>
+      </div>
+      )
+  }
+  renderSections(sections) {
+    var self = this;
     return (
     	<div className="home-header">
          <Navbar className="navbar navbar-normal-pages navbar-show">
             <Navbar.Header>
               <Navbar.Brand>
-                <Link className="navbar-brand" to="/">
+                <a className="navbar-brand" onClick={()=>self.props.history.push("/")}>
                   <p>7hourdev Admin Panel</p>
-                </Link>
+                </a>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
-              {admin_button}
+              <Nav pullRight>
+                <RouteNavItem href="/" activeclassname="active">Home</RouteNavItem>
+                {sections}
+                <RouteNavItem href="/profile" activeclassname="active">Profile</RouteNavItem>
+                <RouteNavItem href="/logout" onClick={this.logout}>Log Out</RouteNavItem>
+              </Nav>;
             </Navbar.Collapse>
           </Navbar>
     	</div>
     	)
   }
-})
+}
+
+var RouteNavItem = (props) =>
+  <Route
+    path={props.href}
+    exact
+    children={({ match, history }) =>
+      <NavItem
+        onClick={e => {e.preventDefault();history.push(e.currentTarget.getAttribute("href"))}}
+        {...props}
+        active={match ? true : false}
+      >
+        {props.children}
+      </NavItem>}
+  />;
+
+export default withRouter(header);

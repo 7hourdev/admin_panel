@@ -3,6 +3,9 @@ var Model = require('../model');
 var AdminCheck = require('../helper/admin_check');
 var bodyParser = require('body-parser');
 
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
 
@@ -160,6 +163,20 @@ router.get('/user/', function(req, res) {
         })
     });
 });
+
+router.post('/user/', function(req, res) {
+    Model.User.create({
+        username: req.body.username,
+        email: req.body.username,
+        type: 0,
+        password: "tmp",
+    }).then(function(user){
+        console.log(user);
+        user.savePassword(req.body.password);
+        res.send(user);
+    })
+});
+
 router.get('/me/', function(req, res) {
     Model.User.findOne({
         attributes: ['email', 'username', 'id', 'type'],
@@ -168,8 +185,23 @@ router.get('/me/', function(req, res) {
         },
         include: Model.Site
     }).then(function(user){
+        user = user.toJSON();
+        delete user["password"];
         res.send(user);
     })
+});
+
+router.post('/login',
+    passport.authenticate('local', { 
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true 
+    })
+);
+
+router.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
 });
 
 module.exports = router;

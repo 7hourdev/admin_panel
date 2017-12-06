@@ -37,5 +37,9 @@ jspm_packages
 .node_repl_history
 
 public/bundle.js
-config.js
 public/bower_components/
+
+.DS_STORE
+yarn.lock
+config.js
+scripts/gen_user.script

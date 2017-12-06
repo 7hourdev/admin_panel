@@ -1,30 +1,22 @@
 import React from 'react';
-import {Link} from 'react-router';
-import URL from '../helper/url'
+import {Link} from 'react-router-dom';
+import {observer} from 'mobx-react';
 
-export default React.createClass({
-    getInitialState(){
-        return {
-            user : this.props.user
-        }
-    },
-    componentWillReceiveProps(nextProps){
-        this.setState({
-            user : nextProps.user
-        });
-    },
+import AppStore from 'stores/app'
+
+export default @observer class profile extends React.Component{
     render() {
         return (
             <div className="container content">
                 <h1>Profile</h1>
                 <p>You cannot change any of your profile information yet, please contact <a href="mailto:7hourdev@gmail.com">7hourdev@gmail.com</a> concerning any issues you may have.</p>
                 <label>Name</label>
-                <p>{this.state.user.username}</p>
+                <p>{AppStore.user.username}</p>
                 <label>Email</label>
-                <p>{this.state.user.email}</p>
+                <p>{AppStore.user.email}</p>
                 <label>Websites</label>
-                {this.state.user.sites.map(website => <p>website</p>)}
+                {AppStore.user.sites.map(website => <p key={website.name}>{website.name}</p>)}
             </div>
         );
     }
-})
+}

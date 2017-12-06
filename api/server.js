@@ -2,98 +2,76 @@ var express = require('express');
 var path = require('path');
 var cors = require('cors');
 var compression = require('compression');
+var session = require('express-session');
 var bodyParser = require('body-parser');
-var webpack = require('webpack');
-var webpackDevMiddleware = require("webpack-dev-middleware");
-var webpackHotMiddleware = require("webpack-hot-middleware");
-var webpackConfig = require('./../webpack.config');
 var config = require('../config');
 
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
 var app = express();
-var compiler = webpack(webpackConfig);
 
 var Model = require('./model');
 require('./db_init');
 
 app.use(cors());
 
-app.use(webpackDevMiddleware(compiler,{
-    noInfo: true, publicPath: webpackConfig.output.publicPath
-}));
+if (process.env.NODE_ENV != "production"){
+    var webpack = require('webpack');
+    var webpackConfig = require('./../webpack.config');
+    var webpackDevMiddleware = require("webpack-dev-middleware");
+    var webpackHotMiddleware = require("webpack-hot-middleware");
+    var compiler = webpack(webpackConfig);
 
-app.use(webpackHotMiddleware(compiler));
+    app.use(webpackDevMiddleware(compiler,{
+        noInfo: true, publicPath: webpackConfig.output.publicPath
+    }));
+
+    app.use(webpackHotMiddleware(compiler));
+}
 
 app.use(compression());
+
 app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
 app.use(bodyParser.json());
 
 // serve our static stuff like index.css
 app.use(express.static(path.join(__dirname, '../public')));
 
-var stormpath = require("express-stormpath");
-var stormpath_client = require("stormpath");
+app.use(session({ secret: "adminportal" }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
-var User = require('./models/user');
-
-app.use(stormpath.init(app, {
-    apiKey: {
-        id: config.stormpath.apiKey.id,
-        secret: config.stormpath.apiKey.secret
-    },
-    application: {
-        href: config.stormpath.application
-    },
-    website: true,
-    debug: "info",
-    web: {
-        login: {
-            enabled: true,
-            nextUri: "/"
-        },
-        changePassword: {
-            autoLogin: false,
-            nextUri: "/",
-        }
-    },
-    postRegistrationHandler: function (account, req, res, next) {
-        var user = User.build({
-            username: account.username,
-            email: account.email,
-        });
-        user.save();
-        next();
-    }
-}));
-
-if(config.reset){
-    var client = new stormpath_client.Client({
-        apiKey: {
-            id: config.stormpath.apiKey.id,
-            secret: config.stormpath.apiKey.secret
-        }
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    Model.User.findOne({where:{username: username }})
+    .then((user)=>{
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      user = user.toJSON();
+      delete user["password"];
+      return done(null, user);
+    })
+    .catch((err)=>{
+      return done(err);
     });
-    client.getApplication(config.stormpath.application, function(err, app) {
-        app.getAccounts(function(err2, accounts) {
-            if (err2){
-                console.log("ERROR: " + err2);
-            }
-            accounts.map(function(account){
-                var user = User.build({
-                    username: account.username,
-                    email: account.email,
-                    createdAt: account.createdAt,
-                    modifiedAt: account.modifiedAt,
-                });
-                if (user.email==="david.lky.123@gmail.com" || user.email==="jeffrey.ying86@live.com"){
-                    user.type =1;
-                }
-                user.save();
-            });
-        });
-    });
-}
+  }
+));
 
-app.use(stormpath.getUser);
+app.use((req,res,next)=>{console.log(req.url);return next()})
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 // custom routes
 var api_route = require('./routes/api');

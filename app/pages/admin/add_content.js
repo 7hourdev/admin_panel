@@ -1,17 +1,18 @@
 import React from 'react';
-import {Link, browserHistory} from 'react-router';
 import {Button} from 'react-bootstrap';
 import Select from 'react-select';
 import URL from '../../helper/url';
 import FieldGroup from './form-group';
+import {Link} from 'react-router-dom';
+import {observer} from 'mobx-react';
 
-export default React.createClass({
+export default @observer class addcontent extends React.Component{
     getInitialState(){
         return {
             users : [],
             selected: []
         }
-    },
+    }
     componentDidMount(){
         $('#content').trumbowyg({
             btns: [
@@ -27,24 +28,24 @@ export default React.createClass({
                 ['fullscreen']
             ]
         });
-    },
+    }
     add(){
         var self = this;
         $.ajax({
-            url:URL("/api/site/"+this.props.params.id),
+            url:URL("/api/site/"+self.props.match.params.id),
             method:"post",
             data:{
                 name:$("#name").val(),
                 content:$("#content").trumbowyg('html'),
             },
             success:function(data){
-                browserHistory.push("/");
+                window.location.href = URL("/"+self.props.match.params.id);
             },
             error:function(err){
                 window.location.href = URL("/login");
             }
         })
-    },
+    }
     render() {
         return (
             <div className="">
@@ -62,10 +63,9 @@ export default React.createClass({
                   label="Content"
                   placeholder="Content of Page"
                 />
-                <button className="btn btn-secondary btn-lg" onClick={this.open}>Back</button>
-                <button className="btn btn-primary btn-lg" onClick={this.add} style={{float:"right"}}>Add</button>
+                <button className="btn btn-primary btn-lg" onClick={this.add.bind(this)} style={{float:"right"}}>Add</button>
 
             </div>
         );
     }
-})
+}
