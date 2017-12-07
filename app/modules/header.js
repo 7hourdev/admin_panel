@@ -73,7 +73,7 @@ class header extends Page{
                 <RouteNavItem href="/" activeclassname="active">Home</RouteNavItem>
                 {sections}
                 <RouteNavItem href="/profile" activeclassname="active">Profile</RouteNavItem>
-                <RouteNavItem href="/logout" onClick={this.logout}>Log Out</RouteNavItem>
+                <RouteNavItem href="/api/logout" onClick={this.logout}>Log Out</RouteNavItem>
               </Nav>;
             </Navbar.Collapse>
           </Navbar>

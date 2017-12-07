@@ -31,7 +31,7 @@ if (process.env.NODE_ENV != "production"){
 } else {
   app.use(compression());
   
-  app.get('*.js', function (req, res, next) {
+  app.get('bundle.js', function (req, res, next) {
     req.url = req.url + '.gz';
     res.set('Content-Encoding', 'gzip');
     next();
