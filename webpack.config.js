@@ -17,6 +17,12 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('local'),
+        'URL': JSON.stringify('//localhost:8080/'),
+      }
+    }),
   ],
   module: {
     loaders: [
