@@ -14,7 +14,8 @@ import AppStore from 'stores/app';
 
 @observer
 class header extends Page{
-  logout() {
+  logout(e) {
+    e.preventDefault();
     $.ajax({
       url:URL("/api/logout"),
       method:"get",
