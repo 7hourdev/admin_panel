@@ -7,7 +7,7 @@
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "bootstrap": "yarn install && ./node_modules/bower/bin/bower install",
     "start:dev": "NODE_ENV=local node api/server.js",
-    "start:prod": "webpack && NODE_ENV=production node api/server.js",
+    "start:prod": "webpack --config webpack.prod.config.js && NODE_ENV=production node api/server.js",
     "test": "webpack && mocha test"
   },
   "author": "",
