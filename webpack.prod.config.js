@@ -10,7 +10,7 @@ webpackConfig.plugins = [
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production'),
-        'URL': JSON.stringify('//portal.7hourdev.com'),
+        'URL': JSON.stringify('//portal.7hourdev.com/'),
       }
     }),
     new CompressionPlugin({
